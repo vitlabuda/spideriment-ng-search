@@ -1,0 +1,57 @@
+# ----- Spideriment-NG Search example configuration file -----
+
+
+
+[generic]
+# As of now, the instance name is displayed on the web frontend and has no other use.
+instance_name = "Spideriment-NG Search"
+
+
+
+[database]
+# Use the same configuration options as those in the configuration file of your Spideriment-NG crawler daemon instance.
+# The search engine uses the tables created by the crawler daemon to perform searches. Keep in mind that the search
+#  engine DOES NOT create the tables by itself, so in order for the search to work, the crawler daemon must be run
+#  first (if the necessary tables do not exist, search attempts fail with a database error).
+
+# Currently implemented drivers: 'mysql'
+driver = "mysql"
+options.mysql_host = "127.0.0.1"
+options.mysql_port = 3306
+options.mysql_user = "spideriment_user"
+options.mysql_password = "spideriment_password"
+options.mysql_db = "spideriment_db"
+
+
+
+[scoring]
+# The default values should be okay in most cases.
+
+min_total_score = 100.0  # Applies to both document and image searches.
+
+title_score_multiplier = 150.0
+description_score_multiplier = 125.0
+heading_1_score_multiplier = 150.0
+heading_2_score_multiplier = 125.0
+heading_3_score_multiplier = 110.0
+heading_4_score_multiplier = 105.0
+heading_5_score_multiplier = 100.0
+emphasized_text_score_multiplier = 125.0
+regular_text_score_multiplier = 110.0
+list_item_text_score_multiplier = 100.0
+uncategorized_text_score_multiplier = 95.0
+fallback_text_score_multiplier = 85.0
+
+image_alt_text_score_multiplier = 90.0
+image_title_text_score_multiplier = 100.0
+
+
+
+[web_view]
+document_search_title_max_length = 80
+document_search_snippet_max_length = 480
+image_search_description_max_length = 40
+
+default_max_search_results = 30
+
+datetime_format_specification = "%Y-%m-%d %H:%M:%S"

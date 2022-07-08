@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="robots" content="noindex,nofollow">
+        <meta name="googlebot" content="nosnippet,noarchive">
+        <link rel="icon" href="{{ url_for('blueprint_web.static', filename='favicon.svg') }}" type="image/svg+xml">
+        <link rel="stylesheet" href="{{ url_for('blueprint_web.static', filename='libs/bootstrap/bootstrap.min.css') }}" type="text/css">
+        <style>
+            .sngs-text-justify {
+                text-align: justify;
+            }
+        </style>
+        <script src="{{ url_for('blueprint_web.static', filename='libs/bootstrap/bootstrap.bundle.min.js') }}"></script>
+        {% block title_block %}
+            <title>{{ G_instance_name }}</title>
+        {% endblock %}
+    </head>
+    <body class="d-flex flex-column min-vh-100 bg-white text-dark">
+        <div class="flex-fill">
+            <header>
+                {% include '_web_header.html' %}
+            </header>
+
+            <main>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% block main_content_block %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+
+        <footer class="bg-dark text-white text-center px-3 py-1">
+            {% include '_web_footer.html' %}
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,181 @@
+{% extends '_web_base.html' %}
+{% import '_web_macros.html' as macros %}
+
+
+
+{% macro M_display_section_heading(_heading_text) %}
+    <h5 class="fw-bold">
+        {{ _heading_text }}
+    </h5>
+{% endmacro %}
+
+{% macro M_display_none(_none_text = 'none') %}
+    <i>
+        &lt;{{ _none_text }}&gt;
+    </i>
+{% endmacro %}
+
+{% macro M_display_link(_url, _text, _none_text = 'none') %}
+    <a href="{{ _url }}" rel="noopener">
+        {% if _text %}
+            {{ _text }}
+        {% else %}
+            {{ M_display_none(_none_text) }}
+        {% endif %}
+    </a>
+{% endmacro %}
+
+{% macro M_display_string(_string, _none_text = 'none') %}
+    {% if _string %}
+        {{ _string }}
+    {% else %}
+        {{ M_display_none(_none_text) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro M_display_list(_list, _none_text = 'none') %}
+    {% if _list %}
+        <ol class="my-3">
+            {% for _item in _list %}
+                <li>
+                    {{ caller(_item) }}
+                </li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <p>
+            {{ M_display_none(_none_text) }}
+        </p>
+    {% endif %}
+{% endmacro %}
+
+{% macro M_display_datetime(_datetime_object, _format_spec) %}
+    {{ _datetime_object.strftime(_format_spec) }}
+{% endmacro %}
+
+
+
+{% block title_block %}
+    {{ macros.GM_display_title(G_web_title_texts.DOCUMENT_INFO) }}
+{% endblock %}
+
+{% block main_content_block %}
+    <div class="my-4">
+        {{ macros.GM_display_heading(G_web_title_texts.DOCUMENT_INFO) }}
+    </div>
+
+    <div class="my-4">
+        {{ macros.GM_display_url_form(optional_parsed_input, 'Show document info') }}
+    </div>
+
+    <div class="my-4">
+        {{ macros.GM_display_optional_error_message(optional_error_message) }}
+
+        {% if optional_model_output is not none %}
+            {% with document_info = optional_model_output %}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('URL') }}
+
+                        <p>
+                            {{ M_display_link(document_info.url, document_info.url) }}
+                        </p>
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Title') }}
+
+                        <p>
+                            {{ M_display_string(document_info.title) }}
+                        </p>
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Description') }}
+
+                        <p>
+                            {{ M_display_string(document_info.description) }}
+                        </p>
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('File type') }}
+
+                        <p>
+                            {{ M_display_string(document_info.filetype) }}
+                        </p>
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Language') }}
+
+                        <p>
+                            {{ M_display_string(document_info.language) }}
+                        </p>
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Author') }}
+
+                        <p>
+                            {{ M_display_string(document_info.author) }}
+                        </p>
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Keywords') }}
+
+                        {% call(keyword) M_display_list(document_info.keywords) %}
+                            {{ M_display_string(keyword) }}
+                        {% endcall %}
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Content snippets') }}
+
+                        {% call(content_snippet) M_display_list(document_info.content_snippets) %}
+                            <b>
+                                {{ M_display_string(content_snippet.type_) }}:
+                            </b>
+                            <span>
+                                {{ M_display_string(content_snippet.text) }}
+                            </span>
+                        {% endcall %}
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Links') }}
+
+                        {% call(link) M_display_list(document_info.links) %}
+                            {{ M_display_link(link.url, link.text, 'no text') }}
+                        {% endcall %}
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Images') }}
+
+                        {% call(image) M_display_list(document_info.images) %}
+                            <span>
+                                {{ M_display_link(image.url, image.title_text, 'no title text') }}
+                            </span>
+
+                            <span class="ms-2 me-1">&bullet;</span>
+
+                            <span>
+                                {{ M_display_link(image.url, image.alt_text, 'no alt text') }}
+                            </span>
+                        {% endcall %}
+                    </li>
+
+                    <li class="list-group-item overflow-hidden">
+                        {{ M_display_section_heading('Crawled at...') }}
+
+                        <p>
+                            {{ M_display_datetime(document_info.crawled_at, G_web_view_config.datetime_format_specification) }}
+                        </p>
+                    </li>
+                </ul>
+            {% endwith %}
+        {% endif %}
+    </div>
+{% endblock %}

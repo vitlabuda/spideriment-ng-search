@@ -1,0 +1,5 @@
+.idea
+__pycache__
+__venv__
+/TODO-private.txt
+/src/spideriment-ng-search.toml

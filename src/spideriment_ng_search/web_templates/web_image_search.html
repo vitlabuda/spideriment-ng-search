@@ -1,0 +1,68 @@
+{% extends '_web_base.html' %}
+{% import '_web_macros.html' as macros %}
+
+{% block title_block %}
+    {{ macros.GM_display_title(G_web_title_texts.IMAGE_SEARCH) }}
+{% endblock %}
+
+{% block main_content_block %}
+    <div class="my-4">
+        {{ macros.GM_display_heading(G_web_title_texts.IMAGE_SEARCH) }}
+    </div>
+
+    <div class="my-4">
+        {{ macros.GM_display_search_form(optional_parsed_input, 'Search for images', G_web_view_config.default_max_search_results) }}
+    </div>
+
+    <div class="my-4">
+        {{ macros.GM_display_optional_error_message(optional_error_message) }}
+
+        {% if optional_model_output is not none %}
+            {% with search_results = optional_model_output %}
+                {% if search_results.search_results %}
+                        {% for search_result in search_results.search_results %}
+                            {% if loop.index0 % 4 == 0 %}
+                                <div class="row d-flex align-items-stretch">
+                            {% endif %}
+
+                            <div class="col-md-3 p-2">
+                                <div class="card w-100 h-100 overflow-hidden">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="flex-grow-1">
+                                            <a class="d-flex align-items-center justify-content-center w-100 h-100" href="{{ search_result.url }}" rel="noopener">
+                                                <img class="img-fluid" src="{{ search_result.url }}" alt="{{ search_result.description|truncate(G_web_view_config.image_search_description_max_length, False, '...') }}">
+                                            </a>
+                                        </div>
+                                        <div class="card-text mt-3">
+                                            <b>
+                                                {{ loop.index }}.
+                                            </b>
+                                            <span>
+                                                {% if search_result.description %}
+                                                    {{ search_result.description|truncate(G_web_view_config.image_search_description_max_length, False, '...') }}
+                                                {% else %}
+                                                    <i>&lt;no description&gt;</i>
+                                                {% endif %}
+
+                                                <span class="text-muted">
+                                                    ({{ search_result.score|round(2) }})
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if loop.index0 % 4 == 3 %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        No images were found!
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends '_web_base.html' %}
+{% import '_web_macros.html' as macros %}
+
+{% block title_block %}
+    {{ macros.GM_display_title(G_web_title_texts.DOCUMENT_SEARCH) }}
+{% endblock %}
+
+{% block main_content_block %}
+    <div class="my-4">
+        {{ macros.GM_display_heading(G_web_title_texts.DOCUMENT_SEARCH) }}
+    </div>
+
+    <div class="my-4">
+        {{ macros.GM_display_search_form(optional_parsed_input, 'Search for documents', G_web_view_config.default_max_search_results) }}
+    </div>
+
+    <div class="my-4">
+        {{ macros.GM_display_optional_error_message(optional_error_message) }}
+
+        {% if optional_model_output is not none %}
+            {% with search_results = optional_model_output %}
+                {% if search_results.search_results %}
+                    <ul class="list-group list-group-flush">
+                        {% for search_result in search_results.search_results %}
+                            <li class="list-group-item overflow-hidden">
+                                <div class="fs-5 my-1">
+                                    <b>
+                                        {{ loop.index }}.
+                                    </b>
+                                    <a href="{{ search_result.url }}" rel="noopener">
+                                        {% if search_result.title %}
+                                            {{ search_result.title|truncate(G_web_view_config.document_search_title_max_length, False, '...') }}
+                                        {% else %}
+                                            <i>&lt;no title&gt;</i>
+                                        {% endif %}
+                                    </a>
+                                </div>
+
+                                <div class="my-1 text-muted text-break">
+                                    {{ search_result.url }}
+                                </div>
+
+                                <div class="my-1 sngs-text-justify">
+                                    {% if search_result.snippet %}
+                                        {{ search_result.snippet|truncate(G_web_view_config.document_search_snippet_max_length, False, '...') }}
+                                    {% else %}
+                                        <i>&lt;no snippet&gt;</i>
+                                    {% endif %}
+
+                                    <span class="text-muted">
+                                        ({{ search_result.score|round(2) }}, <a class="text-muted" href="{{ url_for('blueprint_web.document_info', url=search_result.url) }}">{{ G_web_title_texts.DOCUMENT_INFO|lower() }}</a>)
+                                    </span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        No documents were found!
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    </div>
+{% endblock %}

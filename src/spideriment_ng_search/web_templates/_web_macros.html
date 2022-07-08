@@ -1,0 +1,42 @@
+{% macro GM_display_title(_title_text) -%}
+    <title>{{ _title_text }}</title>
+{%- endmacro %}
+
+{% macro GM_display_heading(_heading_text) -%}
+    <h1 class="text-center fw-bold">{{ _heading_text }}</h1>
+{%- endmacro %}
+
+{% macro GM_display_optional_error_message(_opt_err_msg) -%}
+    {% if _opt_err_msg is not none %}
+        <div class="alert alert-danger" role="alert">
+            {{ _opt_err_msg }}
+        </div>
+    {% endif %}
+{%- endmacro %}
+
+{% macro GM_display_search_form(_opt_search_query, _submit_btn_text, _default_max_search_results) -%}
+    <form method="GET">
+        <div class="my-1 m-md-1">
+            <input type="text" class="form-control form-control-lg" name="search_query" placeholder="Search query" title="Search query" value="{{ _opt_search_query.search_query if _opt_search_query is not none }}">
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-auto me-auto">
+                <input type="number" class="form-control my-1 m-md-1" name="max_results" placeholder="Max results" title="Max results" value="{{ _opt_search_query.max_results if _opt_search_query is not none else _default_max_search_results }}">
+            </div>
+            <div class="col-md-auto ms-auto">
+                <input type="submit" class="btn btn-dark btn-lg my-1 m-md-1" title="{{ _submit_btn_text }}" value="{{ _submit_btn_text }}">
+            </div>
+        </div>
+    </form>
+{%- endmacro %}
+
+{% macro GM_display_url_form(_opt_url, _submit_btn_text) -%}
+    <form method="GET">
+        <div class="my-2">
+            <input type="url" class="form-control form-control-lg" name="url" placeholder="URL" title="URL" value="{{ _opt_url if _opt_url is not none }}">
+        </div>
+        <div class="my-2 text-md-end">
+            <input type="submit" class="btn btn-dark btn-lg" title="{{ _submit_btn_text }}" value="{{ _submit_btn_text }}">
+        </div>
+    </form>
+{%- endmacro %}
