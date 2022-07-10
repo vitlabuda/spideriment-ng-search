@@ -35,7 +35,9 @@ with configuration-provided _scoring multipliers_.
 ## Deployment
 
 ### Docker
-**Coming soon!**
+
+The necessary files and documentation related to deploying this app using Docker are in the
+**[spideriment-ng-docker](https://github.com/vitlabuda/spideriment-ng-docker)** repository.
 
 
 
