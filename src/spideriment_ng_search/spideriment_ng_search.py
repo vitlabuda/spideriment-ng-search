@@ -24,7 +24,7 @@
 import sys
 import os.path
 
-_program_src_dir = os.path.dirname(os.path.realpath(__file__))
+_program_src_dir = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
 if _program_src_dir not in sys.path:
     sys.path.insert(0, _program_src_dir)
 

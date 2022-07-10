@@ -27,7 +27,7 @@ from spideriment_ng_search.helpers.UninstantiableClassMixin import Uninstantiabl
 
 @final
 class SpiderimentSearchConstants(UninstantiableClassMixin):
-    PROGRAM_VERSION: Final[str] = "1.0.0"
+    PROGRAM_VERSION: Final[str] = "1.0.1"
 
     CONFIG_FILE_PATH_ENVVAR: Final[str] = "SNGS_CONFIG_FILE_PATH"
     DEFAULT_CONFIG_FILE_PATH: Final[str] = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../spideriment-ng-search.toml")

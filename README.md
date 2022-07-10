@@ -74,7 +74,7 @@ Assuming you are running `bash`:
 ```shell
 cd src/
 . __venv__/bin/activate
-__venv__/bin/python3 ./spideriment_ng_search.py
+__venv__/bin/python3 ./spideriment_ng_search/spideriment_ng_search.py
 ```
 By default, the configuration file on path [`src/spideriment-ng-search.toml`](src/spideriment-ng-search.toml) is used. 
 If you wish to use a different one, you may specify its path into the `SNGS_CONFIG_FILE_PATH` environment variable.
